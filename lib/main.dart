@@ -14,21 +14,23 @@ void main() {
 }
 
 class SportApp extends StatelessWidget {
-  Color color = Color.fromARGB(255, 42, 144, 86);
+  Color color = Color.fromARGB(234, 208, 236, 242);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
         theme: ThemeData(
-            appBarTheme: AppBarTheme(color: color),
-            scaffoldBackgroundColor: Color.fromARGB(255, 223, 212, 212)),
+            // appBarTheme: AppBarTheme(color: color),
+            scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255)),
         home: MyApp(color));
   }
 }
 
 class MyApp extends StatefulWidget {
   final Color color;
+
   MyApp(this.color);
 
   @override
@@ -145,9 +147,9 @@ class _MyAppState extends State<MyApp> {
             double.parse(userAccelerometer![0]) +
                 double.parse(userAccelerometer![2])) {
           statas = "Jugging";
+        } else {
+          statas = "Stop";
         }
-        else
-        {statas = "Stop";}
       }
     });
   }
@@ -160,36 +162,126 @@ class _MyAppState extends State<MyApp> {
         ?.map((double v) => v.toStringAsFixed(1))
         .toList();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sport App'),
-        actions: [
-          Container(
-            width: 70,
-            child: WaveImage(
-              boarderColor: isNear ? Colors.green : Colors.red,
-              boarderWidth: 1,
-              imageSize: 20,
-              imageUrl:
-                  'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-              radius: 70,
-              speed: 1000,
-              waveColor: isNear ? Colors.green : Colors.red,
-            ),
-          ),
-        ],
-      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
-              width: 300,
+              padding: EdgeInsets.only(top: 30, left: 30, bottom: 20),
+              child: Row(
+                children: [
+                  Text(
+                    "Training",
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.w700),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30, right: 30),
+              width: MediaQuery.of(context).size.width,
+              height: 220,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Color.fromARGB(204, 91, 152, 166),
+                    Color.fromARGB(230, 208, 236, 242),
+                  ], begin: Alignment.bottomLeft, end: Alignment.centerRight),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topRight: Radius.circular(80)),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(5, 10),
+                        blurRadius: 20,
+                        color: Color.fromARGB(51, 0, 0, 0))
+                  ]),
+              child: Container(
+                padding: EdgeInsets.only(left: 20, top: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Avg. speed",
+                      style: TextStyle(
+                          fontSize: 24, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('${average.toStringAsFixed(1)} m/s',
+                        style: TextStyle(
+                            fontSize: 48,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontWeight: FontWeight.bold)
+                        // textAlign: TextAlign.center,
+                        ),
+                    SizedBox(
+                      width: 10,
+                      height: 10,
+                    ),
+                    Container(
+                      child: Row(
+                        children: [
+                          FloatingActionButton(
+                              backgroundColor: widget.color,
+                              child: !flagspeed
+                                  ? Icon(Icons.play_arrow)
+                                  : Icon(Icons.stop),
+                              onPressed: getlocation),
+                          Container(
+                            padding: EdgeInsets.only(left: 200),
+                            child: Text(
+                              time.toString() + " s",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 18,
+              width: 10,
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 30, left: 30, bottom: 20),
+              child: Row(
+                children: [
+                  Text(
+                    "Activity",
+                    style: TextStyle(
+                        fontSize: 24,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.w700),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.33,
               child: Card(
                 shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(150),
-                    borderSide: BorderSide(color: widget.color)),
-                color: widget.color,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10)),
+                    borderSide:
+                        BorderSide(color: Color.fromARGB(204, 160, 206, 217))),
+                color: Color.fromARGB(204, 160, 206, 217),
                 elevation: 20,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -201,54 +293,25 @@ class _MyAppState extends State<MyApp> {
                             : statas == "Walking"
                                 ? Icon(Icons.directions_walk_outlined,
                                     size: 150)
-                                : statas == "Jugging" ?
-                                Icon(Icons.airline_stops_rounded, size: 150)
-                                 :Icon(Icons.directions_run, size: 150),
+                                : statas == "Jugging"
+                                    ? Icon(Icons.airline_stops_rounded,
+                                        size: 150)
+                                    : Icon(Icons.directions_run, size: 150),
                         Text(
-                          "steps :  ${steps}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontSize: 27),
+                          "Steps: ${steps}",
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             statas,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontSize: 27),
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Color.fromARGB(255, 0, 0, 0)),
                           ),
-                        )
-                      ]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              width: 300,
-              height: MediaQuery.of(context).size.height * 0.33,
-              child: Card(
-                shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(150),
-                    borderSide: BorderSide(color: widget.color)),
-                color: widget.color,
-                elevation: 20,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Column(children: [
-                        Icon(Icons.directions_run_sharp, size: 150),
-                        Text(
-                          'Average Speed  \n ${average.toStringAsFixed(1)} m/s',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontSize: 24),
                         )
                       ]),
                     ),
@@ -258,27 +321,6 @@ class _MyAppState extends State<MyApp> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 35.0),
-            child: CircleAvatar(
-              backgroundColor: widget.color,
-              radius: 30,
-              child: Text(
-                time.toString() + " s",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Spacer(),
-          FloatingActionButton(
-              backgroundColor: widget.color,
-              child: !flagspeed ? Icon(Icons.play_arrow) : Icon(Icons.stop),
-              onPressed: getlocation),
-        ],
       ),
     );
   }
